@@ -28,7 +28,7 @@ mysql -P9307 -h0
 ```
 Create new function:
 ```
-mysql> create function fetch returns string soname 'fetch.so';
+create function fetch returns string soname 'fetch.so';
 ```
 
 ## Here's an example of how it works (you can find all the sources in directory 'test'):
