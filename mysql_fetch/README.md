@@ -1,4 +1,4 @@
-# MySQL UDF (plugin) for Manticore Search / Sphinx Search
+# MySQL UDF (user defined function) for Manticore Search / Sphinx Search
 This plugin implements function fetch() which will go to your mysql table from which you (supposedly, but not required) have built the index and will fetch the title so you don't have
  to do it from your app. The output of the function can then be used in other functions, e.g. SNIPPET()
 
