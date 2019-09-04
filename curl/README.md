@@ -1,8 +1,12 @@
+# curl() UDF (user defined function) for Manticore Search to get content from the web by url
+
 ## Introduction
 
-Curl is demo UDF function for Manticore written in go lang.
+Curl is a UDF function for Manticore Search written in Go lang.
 
-Manticore Search is an open source search server designed to be fast, scalable and with powerful and accurate full-text search capabilities. It is a fork of popular search engine Sphinx.
+[Manticore Search](https://manticoresearch.com) is an open source search server designed to be fast, scalable and with powerful and accurate full-text search capabilities. It is a fork of popular search engine Sphinx.
+
+curl() implements fetching content from the web by url which can then be used for highlighting or anything else.
 
 ## Installation
 First, clone or download the repo.
