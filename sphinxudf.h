@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2017-2018, Manticore Software LTD (http://manticoresearch.com)
+// Copyright (c) 2017-2019, Manticore Software LTD (http://manticoresearch.com)
 // Copyright (c) 2011-2016, Andrew Aksyonoff
 // Copyright (c) 2011-2016, Sphinx Technologies Inc
 // All rights reserved
@@ -29,7 +29,11 @@ extern "C" {
 #endif
 
 /// current udf version
-#define SPH_UDF_VERSION 9
+#define SPH_UDF_VERSION 10
+/// version 10 - changed ABI of passing mva attributes to functions:
+/// str_lengths now contains number of values in an mva attribute,
+/// arg_values, in turn, contains arrays of values themselves
+/// (before 1-st DWORD of arg_values was a length)
 
 /// error buffer size
 #define SPH_UDF_ERROR_LEN 256
@@ -46,7 +50,7 @@ enum sphinx_udf_argtype
 	SPH_UDF_TYPE_INT64			= 3,			///< signed 64-bit integer
 	SPH_UDF_TYPE_FLOAT			= 4,			///< single-precision IEEE 754 float
 	SPH_UDF_TYPE_STRING			= 5,			///< non-ASCIIZ string, with a separately stored length
-	SPH_UDF_TYPE_UINT64SET		= 6,			///< sorted set of unsigned 64-bit integers
+	SPH_UDF_TYPE_INT64SET		= 6,			///< sorted set of signed 64-bit integers
 	SPH_UDF_TYPE_FACTORS		= 7,			///< packed ranking factors
 	SPH_UDF_TYPE_JSON			= 8				///< whole json or particular field as a string
 };
@@ -55,6 +59,14 @@ enum sphinx_udf_argtype
 /// results that are returned to searchd MUST be allocated using this replacement
 typedef void * sphinx_malloc_fn ( int );
 
+/// message callback
+/// if plugin implements LIBRARYNAME_setlogcb, it will be invoked just after
+/// version checking and populated with valid pointer to callback.
+/// plugin then may invoke cb and it will write provided message into searchd.log
+/// message might be either with provided len, either asciiz,
+/// in the case 2-nd param must be set to -1
+typedef void sphinx_log_fn ( const char*, int );
+
 /// UDF call arguments
 typedef struct st_sphinx_udf_args
 {
@@ -62,9 +74,11 @@ typedef struct st_sphinx_udf_args
 	enum sphinx_udf_argtype *	arg_types;		///< argument types
 	char **						arg_values;		///< argument values (strings are not (!) ASCIIZ; see str_lengths below)
 	char **						arg_names;		///< argument names (ASCIIZ argname in 'expr AS argname' case; NULL otherwise)
-	int *						str_lengths;	///< string argument lengths
+	int *						str_lengths;	///< string argument lengths, or N of MVA values
 	sphinx_malloc_fn *			fn_malloc;		///< malloc() replacement to allocate returned values
 } SPH_UDF_ARGS;
+
+/// fixme! arg_names field above are actually never set and always contains null
 
 /// UDF initialization
 typedef struct st_sphinx_udf_init

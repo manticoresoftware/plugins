@@ -6,7 +6,7 @@
 // received a copy of the GPL license along with this program; if you
 // did not, you can find it at http://www.gnu.org/
 
-#include "sphinxudf.h"
+#include "../sphinxudf.h"
 
 #include <stdio.h>
 #include <string.h>
