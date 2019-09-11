@@ -269,7 +269,7 @@ func goudf_reinit() {
 }
 
 /// Set warnings gallback. Allows to report messages to daemon's log by calling 'sphWarning'.
-//export udfexample_setlogcb
+//export goudf_setlogcb
 func goudf_setlogcb(logfn *C.sphinx_log_fn) {
 	cblog = logfn
 }
